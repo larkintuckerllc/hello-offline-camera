@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { NetInfo, Text, View } from 'react-native';
+import { Provider } from 'react-redux';
 import styles from './styles';
+import store from '../../store';
 
 export default class App extends PureComponent {
   state = {
@@ -17,10 +19,12 @@ export default class App extends PureComponent {
   render() {
     const { online } = this.state;
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>{online ? 'ONLINE' : 'OFFLINE'}</Text>
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <Text>Open up App.js to start working on your app!</Text>
+          <Text>{online ? 'ONLINE' : 'OFFLINE'}</Text>
+        </View>
+      </Provider>
     );
   }
 }
