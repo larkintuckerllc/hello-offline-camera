@@ -8,10 +8,10 @@ const ONLINE_FETCH_REQUEST = 'HELLO_FETCH_REQUEST';
 const ONLINE_FETCH_RESPONSE = 'HELLO_FETCH_RESPONSE';
 
 // ACTION CREATORS
-export const onlineOn = () => ({
+const onlineOn = () => ({
   type: ONLINE_ON,
 });
-export const onlineOff = () => ({
+const onlineOff = () => ({
   type: ONLINE_OFF,
 });
 const onlineFetchRequest = () => ({
@@ -26,6 +26,16 @@ export const onlineFetch = () => async dispatch => {
   const { type } = await NetInfo.getConnectionInfo();
   const online = type !== 'none';
   dispatch(onlineFetchResponse(online));
+};
+export const onlineSubscribe = () => dispatch => {
+  const handleConnectionChange = ({ type }) => {
+    if (type === 'none') {
+      dispatch(onlineOff());
+      return;
+    }
+    dispatch(onlineOn());
+  };
+  NetInfo.addEventListener('connectionChange', handleConnectionChange);
 };
 
 // STATE

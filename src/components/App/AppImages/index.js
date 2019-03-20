@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
-import { onlineFetch, onlineOff, onlineOn } from '../../../ducks/online';
+import { onlineFetch, onlineSubscribe } from '../../../ducks/online';
 import AppImagesState from './AppImagesState';
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   onlineFetch,
-  onlineOff,
-  onlineOn,
+  onlineSubscribe,
 };
 
 export default connect(
