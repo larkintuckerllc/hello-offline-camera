@@ -1,29 +1,71 @@
+import { NetInfo } from 'react-native';
+import { combineReducers } from 'redux';
+
 // ACTIONS
 const ONLINE_ON = 'ONLINE_ON';
 const ONLINE_OFF = 'ONLINE_OFF';
-export const onlineOn = () => ({
+const ONLINE_FETCH_REQUEST = 'HELLO_FETCH_REQUEST';
+const ONLINE_FETCH_RESPONSE = 'HELLO_FETCH_RESPONSE';
+
+// ACTION CREATORS
+const onlineOn = () => ({
   type: ONLINE_ON,
 });
-export const onlineOff = () => ({
+const onlineOff = () => ({
   type: ONLINE_OFF,
 });
+const onlineFetchRequest = () => ({
+  type: ONLINE_FETCH_REQUEST,
+});
+const onlineFetchResponse = payload => ({
+  payload,
+  type: ONLINE_FETCH_RESPONSE,
+});
+export const onlineFetch = () => async dispatch => {
+  dispatch(onlineFetchRequest());
+  const { type } = await NetInfo.getConnectionInfo();
+  const online = type !== 'none';
+  dispatch(onlineFetchResponse(online));
+};
 
 // STATE
-const initialState = false;
+const initialState = {
+  requested: true,
+  value: false,
+};
 
 // REDUCER
-export default (state = initialState, action) => {
+const requested = (state = initialState.requested, action) => {
   switch (action.type) {
-    case ONLINE_ON:
+    case ONLINE_FETCH_REQUEST:
       return true;
-    case ONLINE_OFF:
+    case ONLINE_FETCH_RESPONSE:
       return false;
     default:
       return state;
   }
 };
+const value = (state = initialState.value, action) => {
+  switch (action.type) {
+    case ONLINE_ON:
+      return true;
+    case ONLINE_OFF:
+      return false;
+    case ONLINE_FETCH_RESPONSE:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export default combineReducers({
+  requested,
+  value,
+});
 
 // SELECTORS
 export const onlineGet = state => {
-  return state.online;
+  return state.online.value;
+};
+export const onlineGetRequested = state => {
+  return state.online.requested;
 };
