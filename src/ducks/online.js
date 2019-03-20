@@ -1,5 +1,14 @@
 import { NetInfo } from 'react-native';
 import { combineReducers } from 'redux';
+import { notificationOn } from './notification';
+
+// SELECTORS
+export const onlineGet = state => {
+  return state.online.value;
+};
+export const onlineGetRequested = state => {
+  return state.online.requested;
+};
 
 // ACTIONS
 const ONLINE_ON = 'ONLINE_ON';
@@ -27,11 +36,16 @@ export const onlineFetch = () => async dispatch => {
   const online = type !== 'none';
   dispatch(onlineFetchResponse(online));
 };
-export const onlineSubscribe = () => dispatch => {
+export const onlineSubscribe = () => (dispatch, getState) => {
   const handleConnectionChange = ({ type }) => {
     if (type === 'none') {
       dispatch(onlineOff());
       return;
+    }
+    const state = getState();
+    const online = onlineGet(state);
+    if (!online) {
+      dispatch(notificationOn());
     }
     dispatch(onlineOn());
   };
@@ -72,10 +86,4 @@ export default combineReducers({
   value,
 });
 
-// SELECTORS
-export const onlineGet = state => {
-  return state.online.value;
-};
-export const onlineGetRequested = state => {
-  return state.online.requested;
-};
+
