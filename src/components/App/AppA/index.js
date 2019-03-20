@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { Button, Text, View } from 'react-native';
+import Status from '../../Status';
 import styles from './styles';
 
 export default class AppA extends PureComponent {
@@ -26,11 +27,14 @@ export default class AppA extends PureComponent {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>A</Text>
-        <Button title="B" onPress={this.handleBPress} />
-        <Button title="C" onPress={this.handleCPress} />
-      </View>
+      <Fragment>
+        <Status />
+        <View style={styles.container}>
+          <Text>A</Text>
+          <Button title="B" onPress={this.handleBPress} />
+          <Button title="C" onPress={this.handleCPress} />
+        </View>
+      </Fragment>
     );
   }
 }
