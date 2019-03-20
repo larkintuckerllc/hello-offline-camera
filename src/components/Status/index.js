@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import StatusView from './StatusView';
-import { notificationGet } from '../../ducks/notification';
+import { notificationGet, notificationOff } from '../../ducks/notification';
 import { onlineGet, onlineGetRequested } from '../../ducks/online';
 
 const mapStateToProps = state => ({
@@ -9,7 +9,9 @@ const mapStateToProps = state => ({
   onlineRequested: onlineGetRequested(state),
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  notificationOff,
+};
 
 export default connect(
   mapStateToProps,

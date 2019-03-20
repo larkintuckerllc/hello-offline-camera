@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 
-const StatusView = ({ notification, online, onlineRequested }) => (
+const StatusView = ({ notification, notificationOff, online, onlineRequested }) => (
   <View>
     <Text>
       Notification:
@@ -16,11 +16,13 @@ const StatusView = ({ notification, online, onlineRequested }) => (
       Online Requested:
       {onlineRequested ? 'TRUE' : 'FALSE'}
     </Text>
+    <Button onPress={notificationOff} title="Acknowledge" />
   </View>
 );
 
 StatusView.propTypes = {
   notification: PropTypes.bool.isRequired,
+  notificationOff: PropTypes.func.isRequired,
   online: PropTypes.bool.isRequired,
   onlineRequested: PropTypes.bool.isRequired,
 };
