@@ -26,6 +26,16 @@ export const onlineFetch = () => async dispatch => {
   const { type } = await NetInfo.getConnectionInfo();
   const online = type !== 'none';
   dispatch(onlineFetchResponse(online));
+
+  // CONNECTION CHANGE
+  const handleConnectionChange = ({ type: changeType }) => {
+    if (changeType === 'none') {
+      dispatch(onlineOff());
+      return;
+    }
+    dispatch(onlineOn());
+  };
+  NetInfo.addEventListener('connectionChange', handleConnectionChange);
 };
 
 // STATE
