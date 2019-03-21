@@ -14,6 +14,7 @@ export default class AppC extends PureComponent {
   state = {
     hasCameraPermission: null,
     name: '',
+    saving: false,
     uri: null,
   };
 
@@ -43,9 +44,9 @@ export default class AppC extends PureComponent {
   handleSavePress = () => {
     const { online } = this.props;
     const { name } = this.state;
+    this.setState({ saving: true });
     console.log(name);
     console.log(online);
-    //
   };
 
   handleTakePhotoPress = async () => {
@@ -58,7 +59,7 @@ export default class AppC extends PureComponent {
 
   render() {
     const { online } = this.props;
-    const { hasCameraPermission, name, uri } = this.state;
+    const { hasCameraPermission, name, saving, uri } = this.state;
     return (
       <AppCConnectedView
         hasCameraPermission={hasCameraPermission}
@@ -69,6 +70,7 @@ export default class AppC extends PureComponent {
         onTakePhotoPress={this.handleTakePhotoPress}
         onChangeText={this.handleChangeText}
         onSavePress={this.handleSavePress}
+        saving={saving}
         uri={uri}
       />
     );
