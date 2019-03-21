@@ -7,6 +7,8 @@ const NAME_REGEX = /^[a-z,A-Z,0-9]+$/;
 
 export default class AppC extends PureComponent {
   static propTypes = {
+    dirty: PropTypes.bool.isRequired,
+    dirtyOn: PropTypes.func.isRequired,
     online: PropTypes.bool.isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
@@ -45,7 +47,7 @@ export default class AppC extends PureComponent {
   };
 
   handleSavePress = async () => {
-    const { online } = this.props;
+    const { dirty, dirtyOn, online } = this.props;
     const { name, uri } = this.state;
     this.setState({ error: false, saving: true });
     try {
@@ -54,7 +56,7 @@ export default class AppC extends PureComponent {
         throw new Error();
       }
       // TODO: FIX
-      if (!online) {
+      if (!online && !dirty) {
         // SOME ONLINE ASYNC
         // throw new Error(); // SAMPLE ERROR
       } else {
@@ -76,13 +78,13 @@ export default class AppC extends PureComponent {
           from: uri,
           to: imageFile,
         };
-        await FileSystem.copyAsync(options);
+        await FileSystem.moveAsync(options);
         */
-        // SET FLAG
+        // SET DIRTY
+        dirtyOn();
       }
       this.setState({ name: '', saving: false, uri: null });
     } catch (error) {
-      console.log(error);
       this.setState({ error: true, saving: false });
     }
   };
