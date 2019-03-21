@@ -72,14 +72,12 @@ export default class AppC extends PureComponent {
         if (fileExists) {
           throw new Error();
         }
-        /*
         // SAVE FILE
         const options = {
           from: uri,
           to: imageFile,
         };
         await FileSystem.moveAsync(options);
-        */
         // SET DIRTY
         dirtyOn();
       }
