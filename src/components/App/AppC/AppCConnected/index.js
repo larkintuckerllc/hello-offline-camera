@@ -60,7 +60,6 @@ export default class AppC extends PureComponent {
       if (!validName) {
         throw new Error();
       }
-      // TODO: FIX
       if (online && !dirty) {
         await delay(); // SAMPLE UPLOAD
         // throw new Error(); // SAMPLE ERROR
@@ -101,10 +100,11 @@ export default class AppC extends PureComponent {
   };
 
   render() {
-    const { online } = this.props;
+    const { dirty, online } = this.props;
     const { error, hasCameraPermission, name, uploading, uri } = this.state;
     return (
       <AppCConnectedView
+        dirty={dirty}
         error={error}
         hasCameraPermission={hasCameraPermission}
         name={name}

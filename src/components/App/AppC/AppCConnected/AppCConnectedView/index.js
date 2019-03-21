@@ -4,6 +4,7 @@ import { Button, Text, TextInput, View } from 'react-native';
 import styles from './styles';
 
 const AppCConnectedView = ({
+  dirty,
   error,
   hasCameraPermission,
   name,
@@ -23,6 +24,7 @@ const AppCConnectedView = ({
   return (
     <View style={styles.container}>
       {online ? <Text>ONLINE</Text> : <Text>OFFLINE</Text>}
+      {dirty ? <Text>DIRTY</Text> : <Text>CLEAN</Text>}
       <Button disabled={uploading} title="A" onPress={onAPress} />
       <Button disabled={uploading} title="B" onPress={onBPress} />
       <Text>C</Text>
@@ -44,6 +46,7 @@ const AppCConnectedView = ({
 };
 
 AppCConnectedView.propTypes = {
+  dirty: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
   hasCameraPermission: PropTypes.bool,
   name: PropTypes.string.isRequired,
