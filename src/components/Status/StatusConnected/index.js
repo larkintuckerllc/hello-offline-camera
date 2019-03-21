@@ -15,7 +15,6 @@ export default class StatusConnected extends PureComponent {
 
   state = {
     error: false,
-    uploaded: false,
     uploading: false,
   };
 
@@ -31,13 +30,14 @@ export default class StatusConnected extends PureComponent {
   };
 
   checkErrors = () => {
-    const { dirtyOff } = this.props;
+    const { dirtyOff, notificationOff } = this.props;
     const { error } = this.state;
-    this.setState({ uploaded: true, uploading: false });
+    this.setState({ uploading: false });
     if (error) {
       return;
     }
     dirtyOff();
+    notificationOff();
   };
 
   handleClosePress = () => {
@@ -60,12 +60,12 @@ export default class StatusConnected extends PureComponent {
 
   render() {
     const { dirty, notification } = this.props;
-    const { uploaded, uploading } = this.state;
+    const { error, uploading } = this.state;
     return (
       <StatusConnectedView
+        error={error}
         onClosePress={this.handleClosePress}
         onUploadPress={this.handleUploadPress}
-        uploaded={uploaded}
         uploading={uploading}
         visible={dirty && notification}
       />
