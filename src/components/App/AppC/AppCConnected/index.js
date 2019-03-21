@@ -62,7 +62,9 @@ export default class AppC extends PureComponent {
       }
       if (online && !dirty) {
         await delay(); // SAMPLE UPLOAD
-        // throw new Error(); // SAMPLE ERROR
+        if (name === 'FIRST') {
+          throw new Error(); // SAMPLE ERROR
+        }
       } else {
         // CREATE IMAGES DIRECTORY
         const imageDirectory = `${FileSystem.documentDirectory}images`;

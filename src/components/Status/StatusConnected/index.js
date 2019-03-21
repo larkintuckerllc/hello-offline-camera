@@ -5,6 +5,11 @@ import StatusConnectedView from './StatusConnectedView';
 
 const IMAGE_DIRECTORY = `${FileSystem.documentDirectory}images`;
 
+const delay = () =>
+  new Promise(resolve => {
+    setTimeout(resolve, 1000);
+  });
+
 export default class StatusConnected extends PureComponent {
   static propTypes = {
     dirty: PropTypes.bool.isRequired,
@@ -27,19 +32,23 @@ export default class StatusConnected extends PureComponent {
   handleUpload = async name => {
     const imageFile = `${IMAGE_DIRECTORY}/${name}`;
     try {
-      // SOME ONLINE ASYNC
-      // throw new Error(); // SAMPLE ERROR
+      await delay(); // SAMPLE UPLOAD
+      if (name === 'SECOND') {
+        throw new Error(); // SAMPLE ERROR
+      }
       await FileSystem.deleteAsync(imageFile, {});
     } catch (error) {
       this.setState({ error: true });
     }
   };
 
-  checkErrors = () => {
+  checkErrors = async () => {
     const { dirtyOff, notificationOff } = this.props;
     const { error } = this.state;
     this.setState({ uploading: false });
     if (error) {
+      const names = await FileSystem.readDirectoryAsync(IMAGE_DIRECTORY);
+      this.setState({ names });
       return;
     }
     dirtyOff();
