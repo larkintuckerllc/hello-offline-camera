@@ -3,9 +3,10 @@ import React from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
 import styles from './styles';
 
-const AppCView = ({
+const AppCConnectedView = ({
   hasCameraPermission,
   name,
+  online,
   onAPress,
   onBPress,
   onTakePhotoPress,
@@ -20,6 +21,7 @@ const AppCView = ({
   const disabled = name.trim() === '';
   return (
     <View style={styles.container}>
+      {online ? <Text>ONLINE</Text> : <Text>OFFLINE</Text>}
       <Button title="A" onPress={onAPress} />
       <Button title="B" onPress={onBPress} />
       <Text>C</Text>
@@ -34,9 +36,10 @@ const AppCView = ({
   );
 };
 
-AppCView.propTypes = {
+AppCConnectedView.propTypes = {
   hasCameraPermission: PropTypes.bool,
   name: PropTypes.string.isRequired,
+  online: PropTypes.bool.isRequired,
   onAPress: PropTypes.func.isRequired,
   onBPress: PropTypes.func.isRequired,
   onTakePhotoPress: PropTypes.func.isRequired,
@@ -45,9 +48,9 @@ AppCView.propTypes = {
   uri: PropTypes.string,
 };
 
-AppCView.defaultProps = {
+AppCConnectedView.defaultProps = {
   hasCameraPermission: null,
   uri: null,
 };
 
-export default AppCView;
+export default AppCConnectedView;
