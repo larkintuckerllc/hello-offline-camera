@@ -5,6 +5,11 @@ import AppCConnectedView from './AppCConnectedView';
 
 const NAME_REGEX = /^[a-z,A-Z,0-9]+$/;
 
+const delay = () =>
+  new Promise(resolve => {
+    setTimeout(resolve, 1000);
+  });
+
 export default class AppC extends PureComponent {
   static propTypes = {
     dirty: PropTypes.bool.isRequired,
@@ -19,7 +24,7 @@ export default class AppC extends PureComponent {
     error: false,
     hasCameraPermission: null,
     name: '',
-    saving: false,
+    uploading: false,
     uri: null,
   };
 
@@ -46,18 +51,18 @@ export default class AppC extends PureComponent {
     this.setState({ name: text });
   };
 
-  handleSavePress = async () => {
+  handleUploadPress = async () => {
     const { dirty, dirtyOn, online } = this.props;
     const { name, uri } = this.state;
-    this.setState({ error: false, saving: true });
+    this.setState({ error: false, uploading: true });
     try {
       const validName = NAME_REGEX.test(name);
       if (!validName) {
         throw new Error();
       }
       // TODO: FIX
-      if (!online && !dirty) {
-        // SOME ONLINE ASYNC
+      if (online && !dirty) {
+        await delay(); // SAMPLE UPLOAD
         // throw new Error(); // SAMPLE ERROR
       } else {
         // CREATE IMAGES DIRECTORY
@@ -81,9 +86,9 @@ export default class AppC extends PureComponent {
         // SET DIRTY
         dirtyOn();
       }
-      this.setState({ name: '', saving: false, uri: null });
+      this.setState({ name: '', uploading: false, uri: null });
     } catch (error) {
-      this.setState({ error: true, saving: false });
+      this.setState({ error: true, uploading: false });
     }
   };
 
@@ -97,7 +102,7 @@ export default class AppC extends PureComponent {
 
   render() {
     const { online } = this.props;
-    const { error, hasCameraPermission, name, saving, uri } = this.state;
+    const { error, hasCameraPermission, name, uploading, uri } = this.state;
     return (
       <AppCConnectedView
         error={error}
@@ -108,8 +113,8 @@ export default class AppC extends PureComponent {
         onBPress={this.handleBPress}
         onTakePhotoPress={this.handleTakePhotoPress}
         onChangeText={this.handleChangeText}
-        onSavePress={this.handleSavePress}
-        saving={saving}
+        onUploadPress={this.handleUploadPress}
+        uploading={uploading}
         uri={uri}
       />
     );

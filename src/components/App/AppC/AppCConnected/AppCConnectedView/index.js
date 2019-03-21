@@ -12,34 +12,33 @@ const AppCConnectedView = ({
   onBPress,
   onTakePhotoPress,
   onChangeText,
-  onSavePress,
-  saving,
+  onUploadPress,
+  uploading,
   uri,
 }) => {
   if (hasCameraPermission === null) {
     return null;
   }
-  // const disabled = uri === null || name.trim() === '';
-  const saveDisabled = saving || name.trim() === '';
+  const invalid = uri === null || name.trim() === '';
   return (
     <View style={styles.container}>
       {online ? <Text>ONLINE</Text> : <Text>OFFLINE</Text>}
-      <Button disabled={saving} title="A" onPress={onAPress} />
-      <Button disabled={saving} title="B" onPress={onBPress} />
+      <Button disabled={uploading} title="A" onPress={onAPress} />
+      <Button disabled={uploading} title="B" onPress={onBPress} />
       <Text>C</Text>
       {hasCameraPermission ? (
-        <Button disabled={saving} title="Take Photo" onPress={onTakePhotoPress} />
+        <Button disabled={uploading} title="Take Photo" onPress={onTakePhotoPress} />
       ) : (
         <Text>No access to camera</Text>
       )}
       <TextInput
-        editable={!saving}
+        editable={!uploading}
         style={styles.containerTextInput}
         onChangeText={onChangeText}
         value={name}
       />
-      {error && <Text>Error Saving</Text>}
-      <Button disabled={saveDisabled} title="Save" onPress={onSavePress} />
+      {error && <Text>Error Uploading</Text>}
+      <Button disabled={invalid || uploading} title="Upload" onPress={onUploadPress} />
     </View>
   );
 };
@@ -53,8 +52,8 @@ AppCConnectedView.propTypes = {
   onBPress: PropTypes.func.isRequired,
   onTakePhotoPress: PropTypes.func.isRequired,
   onChangeText: PropTypes.func.isRequired,
-  onSavePress: PropTypes.func.isRequired,
-  saving: PropTypes.bool.isRequired,
+  onUploadPress: PropTypes.func.isRequired,
+  uploading: PropTypes.bool.isRequired,
   uri: PropTypes.string,
 };
 

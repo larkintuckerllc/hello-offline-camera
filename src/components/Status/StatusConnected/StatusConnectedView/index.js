@@ -3,11 +3,11 @@ import React from 'react';
 import { Button, Modal, View } from 'react-native';
 import styles from './styles';
 
-const StatusConnectedView = ({ onClosePress, onUploadPress, saved, saving, visible }) => (
+const StatusConnectedView = ({ onClosePress, onUploadPress, uploaded, uploading, visible }) => (
   <Modal visible={visible}>
     <View style={styles.container}>
-      <Button disabled={saving || saved} onPress={onUploadPress} title="Upload" />
-      <Button disabled={saving} onPress={onClosePress} title="Close" />
+      <Button disabled={uploading || uploaded} onPress={onUploadPress} title="Upload" />
+      <Button disabled={uploading} onPress={onClosePress} title="Close" />
     </View>
   </Modal>
 );
@@ -15,8 +15,8 @@ const StatusConnectedView = ({ onClosePress, onUploadPress, saved, saving, visib
 StatusConnectedView.propTypes = {
   onClosePress: PropTypes.func.isRequired,
   onUploadPress: PropTypes.func.isRequired,
-  saved: PropTypes.bool.isRequired,
-  saving: PropTypes.bool.isRequired,
+  uploaded: PropTypes.bool.isRequired,
+  uploading: PropTypes.bool.isRequired,
   visible: PropTypes.bool.isRequired,
 };
 
