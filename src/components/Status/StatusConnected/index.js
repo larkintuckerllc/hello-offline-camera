@@ -24,10 +24,21 @@ export default class StatusConnected extends PureComponent {
     uploading: false,
   };
 
-  async componentDidMount() {
-    const names = await FileSystem.readDirectoryAsync(IMAGE_DIRECTORY);
-    this.setState({ names });
+  componentDidMount() {
+    this.readNames();
   }
+
+  componentDidUpdate({ notification: prevNotification }) {
+    const { dirty, notification } = this.props;
+    if (dirty && notification && !prevNotification) {
+      this.readNames();
+    }
+  }
+
+  readNames = async () => {
+    const names = await FileSystem.readDirectoryAsync(IMAGE_DIRECTORY);
+    this.setState({ error: false, names });
+  };
 
   handleUpload = async name => {
     const imageFile = `${IMAGE_DIRECTORY}/${name}`;
