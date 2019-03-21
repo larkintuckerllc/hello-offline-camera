@@ -1,40 +1,19 @@
-import PropTypes from 'prop-types';
-import React, { Fragment, PureComponent } from 'react';
-import { Button, Text, View } from 'react-native';
-import Status from '../../Status';
-import styles from './styles';
+import { connect } from 'react-redux';
+import AppAConnected from './AppAConnected';
+import { dirtyGet } from '../../../ducks/dirty';
+import { onlineGet } from '../../../ducks/online';
+import { notificationOn } from '../../../ducks/notification';
 
-export default class AppA extends PureComponent {
-  static propTypes = {
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-    }).isRequired,
-  };
+const mapStateToProps = state => ({
+  dirty: dirtyGet(state),
+  online: onlineGet(state),
+});
 
-  handleBPress = () => {
-    const {
-      navigation: { navigate },
-    } = this.props;
-    navigate('AppB');
-  };
+const mapDispatchToProps = {
+  notificationOn,
+};
 
-  handleCPress = () => {
-    const {
-      navigation: { navigate },
-    } = this.props;
-    navigate('AppC');
-  };
-
-  render() {
-    return (
-      <Fragment>
-        <Status />
-        <View style={styles.container}>
-          <Text>A</Text>
-          <Button title="B" onPress={this.handleBPress} />
-          <Button title="C" onPress={this.handleCPress} />
-        </View>
-      </Fragment>
-    );
-  }
-}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppAConnected);
