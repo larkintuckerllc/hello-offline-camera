@@ -1,7 +1,9 @@
-import { ImagePicker, Permissions } from 'expo';
+import { FileSystem, ImagePicker, Permissions } from 'expo';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import AppCConnectedView from './AppCConnectedView';
+
+const NAME_REGEX = /^[a-z,A-Z,0-9]+$/;
 
 export default class AppC extends PureComponent {
   static propTypes = {
@@ -12,6 +14,7 @@ export default class AppC extends PureComponent {
   };
 
   state = {
+    error: false,
     hasCameraPermission: null,
     name: '',
     saving: false,
@@ -41,12 +44,47 @@ export default class AppC extends PureComponent {
     this.setState({ name: text });
   };
 
-  handleSavePress = () => {
+  handleSavePress = async () => {
     const { online } = this.props;
-    const { name } = this.state;
-    this.setState({ saving: true });
-    console.log(name);
-    console.log(online);
+    const { name, uri } = this.state;
+    this.setState({ error: false, saving: true });
+    try {
+      const validName = NAME_REGEX.test(name);
+      if (!validName) {
+        throw new Error();
+      }
+      // TODO: FIX
+      if (!online) {
+        // SOME ONLINE ASYNC
+        // throw new Error(); // SAMPLE ERROR
+      } else {
+        // CREATE IMAGES DIRECTORY
+        const imageDirectory = `${FileSystem.documentDirectory}images`;
+        const { exists: dirExists } = await FileSystem.getInfoAsync(imageDirectory, {});
+        if (!dirExists) {
+          await FileSystem.makeDirectoryAsync(imageDirectory, {});
+        }
+        // VALIDATE NO DUPLICATE NAME
+        const imageFile = `${imageDirectory}/${name}`;
+        const { exists: fileExists } = await FileSystem.getInfoAsync(imageFile, {});
+        if (fileExists) {
+          throw new Error();
+        }
+        /*
+        // SAVE FILE
+        const options = {
+          from: uri,
+          to: imageFile,
+        };
+        await FileSystem.copyAsync(options);
+        */
+        // SET FLAG
+      }
+      this.setState({ name: '', saving: false, uri: null });
+    } catch (error) {
+      console.log(error);
+      this.setState({ error: true, saving: false });
+    }
   };
 
   handleTakePhotoPress = async () => {
@@ -59,9 +97,10 @@ export default class AppC extends PureComponent {
 
   render() {
     const { online } = this.props;
-    const { hasCameraPermission, name, saving, uri } = this.state;
+    const { error, hasCameraPermission, name, saving, uri } = this.state;
     return (
       <AppCConnectedView
+        error={error}
         hasCameraPermission={hasCameraPermission}
         name={name}
         online={online}

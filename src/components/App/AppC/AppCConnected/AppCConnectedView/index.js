@@ -4,6 +4,7 @@ import { Button, Text, TextInput, View } from 'react-native';
 import styles from './styles';
 
 const AppCConnectedView = ({
+  error,
   hasCameraPermission,
   name,
   online,
@@ -37,12 +38,14 @@ const AppCConnectedView = ({
         onChangeText={onChangeText}
         value={name}
       />
+      {error && <Text>Error Saving</Text>}
       <Button disabled={saveDisabled} title="Save" onPress={onSavePress} />
     </View>
   );
 };
 
 AppCConnectedView.propTypes = {
+  error: PropTypes.bool.isRequired,
   hasCameraPermission: PropTypes.bool,
   name: PropTypes.string.isRequired,
   online: PropTypes.bool.isRequired,
