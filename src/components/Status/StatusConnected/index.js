@@ -15,8 +15,14 @@ export default class StatusConnected extends PureComponent {
 
   state = {
     error: false,
+    names: [],
     uploading: false,
   };
+
+  async componentDidMount() {
+    const names = await FileSystem.readDirectoryAsync(IMAGE_DIRECTORY);
+    this.setState({ names });
+  }
 
   handleUpload = async name => {
     const imageFile = `${IMAGE_DIRECTORY}/${name}`;
@@ -46,8 +52,8 @@ export default class StatusConnected extends PureComponent {
   };
 
   handleUploadPress = async () => {
+    const { names } = this.state;
     const uploads = [];
-    const names = await FileSystem.readDirectoryAsync(IMAGE_DIRECTORY);
     this.setState({ uploading: true });
     for (let i = 0; i < names.length; i += 1) {
       const name = names[i];
@@ -60,10 +66,11 @@ export default class StatusConnected extends PureComponent {
 
   render() {
     const { dirty, notification } = this.props;
-    const { error, uploading } = this.state;
+    const { error, names, uploading } = this.state;
     return (
       <StatusConnectedView
         error={error}
+        names={names}
         onClosePress={this.handleClosePress}
         onUploadPress={this.handleUploadPress}
         uploading={uploading}
