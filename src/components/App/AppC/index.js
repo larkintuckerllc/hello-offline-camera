@@ -1,8 +1,7 @@
 import { ImagePicker, Permissions } from 'expo';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Button, Text, View } from 'react-native';
-import styles from './styles';
+import AppCView from './AppCView';
 
 export default class AppC extends PureComponent {
   static propTypes = {
@@ -13,6 +12,8 @@ export default class AppC extends PureComponent {
 
   state = {
     hasCameraPermission: null,
+    name: '',
+    uri: null,
   };
 
   async componentDidMount() {
@@ -34,30 +35,37 @@ export default class AppC extends PureComponent {
     navigate('AppB');
   };
 
+  handleChangeText = text => {
+    this.setState({ name: text });
+  };
+
+  handleSavePress = () => {
+    const { name } = this.state;
+    console.log(name);
+    //
+  };
+
   handleTakePhotoPress = async () => {
     const { cancelled, uri } = await ImagePicker.launchCameraAsync({});
     if (cancelled) {
       return;
     }
-    console.log(uri);
+    this.setState({ uri });
   };
 
   render() {
-    const { hasCameraPermission } = this.state;
-    if (hasCameraPermission === null) {
-      return null;
-    }
+    const { hasCameraPermission, name, uri } = this.state;
     return (
-      <View style={styles.container}>
-        <Button title="A" onPress={this.handleAPress} />
-        <Button title="B" onPress={this.handleBPress} />
-        <Text>C</Text>
-        {hasCameraPermission ? (
-          <Button title="Take Photo" onPress={this.handleTakePhotoPress} />
-        ) : (
-          <Text>No access to camera</Text>
-        )}
-      </View>
+      <AppCView
+        hasCameraPermission={hasCameraPermission}
+        name={name}
+        onAPress={this.handleAPress}
+        onBPress={this.handleBPress}
+        onTakePhotoPress={this.handleTakePhotoPress}
+        onChangeText={this.handleChangeText}
+        onSavePress={this.handleSavePress}
+        uri={uri}
+      />
     );
   }
 }
