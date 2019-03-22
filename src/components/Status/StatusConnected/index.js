@@ -88,9 +88,10 @@ export default class StatusConnected extends PureComponent {
 
   render() {
     const { dirty, notification } = this.props;
-    const { error, errored, names, uploaded, uploading } = this.state;
+    const { completed, error, errored, names, uploaded, uploading } = this.state;
     return (
       <StatusConnectedView
+        complete={completed}
         dirty={dirty}
         error={error}
         errored={errored}

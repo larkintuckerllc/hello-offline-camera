@@ -4,6 +4,7 @@ import { Button, Modal, Text, View } from 'react-native';
 import styles from './styles';
 
 const StatusConnectedView = ({
+  completed,
   dirty,
   error,
   errored,
@@ -24,13 +25,18 @@ const StatusConnectedView = ({
         </Text>
       ))}
       {error && <Text>ERROR UPLOADING</Text>}
-      <Button disabled={!dirty || uploading} onPress={onUploadPress} title="Upload" />
+      <Button
+        disabled={(completed && !error) || uploading}
+        onPress={onUploadPress}
+        title="Upload"
+      />
       <Button disabled={uploading} onPress={onClosePress} title="Close" />
     </View>
   </Modal>
 );
 
 StatusConnectedView.propTypes = {
+  completed: PropTypes.bool.isRequired,
   dirty: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
   errored: PropTypes.objectOf(PropTypes.bool).isRequired,
