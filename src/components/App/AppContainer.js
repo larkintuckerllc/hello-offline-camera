@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import AppA from './AppA';
 import AppB from './AppB';
 import AppC from './AppC';
+import AppD from './AppD';
 import { dirtyInitialize } from '../../ducks/dirty';
 import { onlineFetch, onlineSubscribe } from '../../ducks/online';
 import { notificationInitialize } from '../../ducks/notification';
@@ -15,6 +16,7 @@ const AppNavigator = createSwitchNavigator(
     AppA,
     AppB,
     AppC,
+    AppD,
   },
   {
     initialRouteName: 'AppA',
