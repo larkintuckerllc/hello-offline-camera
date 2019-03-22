@@ -1,8 +1,11 @@
+import { FileSystem } from 'expo';
 import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
 import { Button, Text, View } from 'react-native';
 import Status from '../../../Status';
 import styles from './styles';
+
+const IMAGE_DIRECTORY = `${FileSystem.documentDirectory}images`;
 
 export default class AppAConnected extends PureComponent {
   static propTypes = {
@@ -33,6 +36,20 @@ export default class AppAConnected extends PureComponent {
     notificationOn();
   };
 
+  handleFixPress = async () => {
+    const imageFile = `${IMAGE_DIRECTORY}/Error`;
+    const { exists } = await FileSystem.getInfoAsync(imageFile, {});
+    if (!exists) {
+      return;
+    }
+    const fixedImageFile = `${IMAGE_DIRECTORY}/Fixed`;
+    const options = {
+      from: imageFile,
+      to: fixedImageFile,
+    };
+    FileSystem.moveAsync(options);
+  };
+
   render() {
     const { dirty, online } = this.props;
     return (
@@ -46,6 +63,7 @@ export default class AppAConnected extends PureComponent {
             title="Show Notification"
             onPress={this.handleShowPress}
           />
+          <Button title="Fix" onPress={this.handleFixPress} />
           <Text>A</Text>
           <Button title="B" onPress={this.handleBPress} />
           <Button title="C" onPress={this.handleCPress} />

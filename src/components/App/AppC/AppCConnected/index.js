@@ -69,8 +69,8 @@ export default class AppC extends PureComponent {
       } else {
         // VALIDATE NO DUPLICATE NAME
         const imageFile = `${IMAGE_DIRECTORY}/${name}`;
-        const { exists: fileExists } = await FileSystem.getInfoAsync(imageFile, {});
-        if (fileExists) {
+        const { exists } = await FileSystem.getInfoAsync(imageFile, {});
+        if (exists) {
           throw new Error();
         }
         // SAVE FILE

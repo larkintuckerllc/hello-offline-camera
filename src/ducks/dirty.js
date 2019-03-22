@@ -15,8 +15,8 @@ export const dirtyOff = () => ({
 });
 export const dirtyInitialize = () => async dispatch => {
   // CREATE IMAGES DIRECTORY
-  const { exists: dirExists } = await FileSystem.getInfoAsync(IMAGE_DIRECTORY, {});
-  if (!dirExists) {
+  const { exists } = await FileSystem.getInfoAsync(IMAGE_DIRECTORY, {});
+  if (!exists) {
     await FileSystem.makeDirectoryAsync(IMAGE_DIRECTORY, {});
   }
   // SET DIRTY
