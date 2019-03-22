@@ -20,27 +20,35 @@ export default class StatusConnected extends PureComponent {
 
   state = {
     error: false,
+    errored: {},
     names: [],
+    uploaded: {},
     uploading: false,
   };
 
   componentDidMount() {
-    this.readNames();
+    this.reset();
   }
 
   componentDidUpdate({ notification: prevNotification }) {
     const { dirty, notification } = this.props;
     if (dirty && notification && !prevNotification) {
-      this.readNames();
+      this.reset();
     }
   }
 
-  readNames = async () => {
+  reset = async () => {
     const names = await FileSystem.readDirectoryAsync(IMAGE_DIRECTORY);
-    this.setState({ error: false, names });
+    this.setState({
+      error: false,
+      errored: {},
+      names,
+      uploaded: {},
+    });
   };
 
-  handleUpload = async name => {
+  uploadFile = async name => {
+    const { errored, uploaded } = this.state;
     const imageFile = `${IMAGE_DIRECTORY}/${name}`;
     try {
       await delay(); // SAMPLE UPLOAD
@@ -48,22 +56,20 @@ export default class StatusConnected extends PureComponent {
         throw new Error(); // SAMPLE ERROR
       }
       await FileSystem.deleteAsync(imageFile, {});
+      this.setState({ uploaded: { ...uploaded, [name]: true } });
     } catch (error) {
-      this.setState({ error: true });
+      this.setState({ error: true, errored: { ...errored, [name]: true } });
     }
   };
 
   checkErrors = async () => {
-    const { dirtyOff, notificationOff } = this.props;
+    const { dirtyOff } = this.props;
     const { error } = this.state;
     this.setState({ uploading: false });
     if (error) {
-      const names = await FileSystem.readDirectoryAsync(IMAGE_DIRECTORY);
-      this.setState({ names });
       return;
     }
     dirtyOff();
-    notificationOff();
   };
 
   handleClosePress = () => {
@@ -72,12 +78,13 @@ export default class StatusConnected extends PureComponent {
   };
 
   handleUploadPress = async () => {
-    const { names } = this.state;
+    const { names, uploaded } = this.state;
     const uploads = [];
     this.setState({ uploading: true });
-    for (let i = 0; i < names.length; i += 1) {
+    const uploadNames = names.filter(name => uploaded[name] === undefined);
+    for (let i = 0; i < uploadNames.length; i += 1) {
       const name = names[i];
-      const upload = this.handleUpload(name);
+      const upload = this.uploadFile(name);
       uploads.push(upload);
     }
     await Promise.all(uploads);
@@ -86,15 +93,18 @@ export default class StatusConnected extends PureComponent {
 
   render() {
     const { dirty, notification } = this.props;
-    const { error, names, uploading } = this.state;
+    const { error, errored, names, uploaded, uploading } = this.state;
     return (
       <StatusConnectedView
+        dirty={dirty}
         error={error}
+        errored={errored}
         names={names}
+        notification={notification}
         onClosePress={this.handleClosePress}
         onUploadPress={this.handleUploadPress}
+        uploaded={uploaded}
         uploading={uploading}
-        visible={dirty && notification}
       />
     );
   }

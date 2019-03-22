@@ -3,26 +3,43 @@ import React from 'react';
 import { Button, Modal, Text, View } from 'react-native';
 import styles from './styles';
 
-const StatusConnectedView = ({ error, names, onClosePress, onUploadPress, uploading, visible }) => (
-  <Modal visible={visible}>
+const StatusConnectedView = ({
+  dirty,
+  error,
+  errored,
+  names,
+  notification,
+  onClosePress,
+  onUploadPress,
+  uploaded,
+  uploading,
+}) => (
+  <Modal visible={dirty && notification}>
     <View style={styles.container}>
       {names.map(name => (
-        <Text key={name}>{name}</Text>
+        <Text key={name}>
+          {name}
+          {uploaded[name] !== undefined && 'uploaded'}
+          {errored[name] !== undefined && 'errored'}
+        </Text>
       ))}
       {error && <Text>Error Uploading</Text>}
-      <Button disabled={uploading} onPress={onUploadPress} title="Upload" />
+      <Button disabled={!dirty || uploading} onPress={onUploadPress} title="Upload" />
       <Button disabled={uploading} onPress={onClosePress} title="Close" />
     </View>
   </Modal>
 );
 
 StatusConnectedView.propTypes = {
+  dirty: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
+  errored: PropTypes.objectOf(PropTypes.bool).isRequired,
   names: PropTypes.arrayOf(PropTypes.string).isRequired,
+  notification: PropTypes.bool.isRequired,
   onClosePress: PropTypes.func.isRequired,
   onUploadPress: PropTypes.func.isRequired,
+  uploaded: PropTypes.objectOf(PropTypes.bool).isRequired,
   uploading: PropTypes.bool.isRequired,
-  visible: PropTypes.bool.isRequired,
 };
 
 export default StatusConnectedView;
