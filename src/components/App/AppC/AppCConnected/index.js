@@ -63,7 +63,7 @@ export default class AppC extends PureComponent {
       }
       if (online && !dirty) {
         await delay(); // SAMPLE UPLOAD
-        if (name === 'first') {
+        if (name === 'Error') {
           throw new Error(); // SAMPLE ERROR
         }
       } else {

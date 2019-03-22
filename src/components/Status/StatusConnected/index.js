@@ -50,17 +50,16 @@ export default class StatusConnected extends PureComponent {
   };
 
   uploadFile = async name => {
-    const { errored, uploaded } = this.state;
     const imageFile = `${IMAGE_DIRECTORY}/${name}`;
     try {
       await delay(); // SAMPLE UPLOAD
-      if (name === 'second') {
+      if (name === 'Error') {
         throw new Error(); // SAMPLE ERROR
       }
       await FileSystem.deleteAsync(imageFile, {});
-      this.setState({ uploaded: { ...uploaded, [name]: true } });
+      this.setState(({ uploaded }) => ({ uploaded: { ...uploaded, [name]: true } }));
     } catch (error) {
-      this.setState({ error: true, errored: { ...errored, [name]: true } });
+      this.setState(({ errored }) => ({ error: true, errored: { ...errored, [name]: true } }));
     }
   };
 
