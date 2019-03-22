@@ -1,6 +1,6 @@
 import { NetInfo } from 'react-native';
 import { combineReducers } from 'redux';
-import { notificationOn } from './notification';
+import { notificationOff, notificationOn } from './notification';
 
 // SELECTORS
 export const onlineGet = state => {
@@ -39,6 +39,7 @@ export const onlineFetch = () => async dispatch => {
 export const onlineSubscribe = () => (dispatch, getState) => {
   const handleConnectionChange = ({ type }) => {
     if (type === 'none') {
+      dispatch(notificationOff());
       dispatch(onlineOff());
       return;
     }
