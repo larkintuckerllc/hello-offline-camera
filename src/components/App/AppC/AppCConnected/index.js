@@ -8,7 +8,7 @@ const IMAGE_DIRECTORY = `${FileSystem.documentDirectory}images`;
 
 const delay = () =>
   new Promise(resolve => {
-    setTimeout(resolve, 1000);
+    setTimeout(resolve, 3000);
   });
 
 export default class AppC extends PureComponent {

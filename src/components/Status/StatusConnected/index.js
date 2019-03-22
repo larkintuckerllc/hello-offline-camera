@@ -7,7 +7,7 @@ const IMAGE_DIRECTORY = `${FileSystem.documentDirectory}images`;
 
 const delay = () =>
   new Promise(resolve => {
-    setTimeout(resolve, 1000);
+    setTimeout(resolve, 3000);
   });
 
 export default class StatusConnected extends PureComponent {
@@ -91,7 +91,7 @@ export default class StatusConnected extends PureComponent {
     const { completed, error, errored, names, uploaded, uploading } = this.state;
     return (
       <StatusConnectedView
-        complete={completed}
+        completed={completed}
         dirty={dirty}
         error={error}
         errored={errored}
