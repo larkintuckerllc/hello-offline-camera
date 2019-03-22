@@ -31,6 +31,13 @@ export default class AppAConnected extends PureComponent {
     navigate('AppC');
   };
 
+  handleDPress = () => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate('AppD');
+  };
+
   handleShowPress = () => {
     const { notificationOn } = this.props;
     notificationOn();
@@ -67,6 +74,7 @@ export default class AppAConnected extends PureComponent {
           <Text>A</Text>
           <Button title="B" onPress={this.handleBPress} />
           <Button title="C" onPress={this.handleCPress} />
+          <Button title="D" onPress={this.handleDPress} />
         </View>
       </Fragment>
     );

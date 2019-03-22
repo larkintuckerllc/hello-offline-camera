@@ -48,6 +48,13 @@ export default class AppC extends PureComponent {
     navigate('AppB');
   };
 
+  handleDPress = () => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate('AppD');
+  };
+
   handleChangeText = text => {
     this.setState({ name: text });
   };
@@ -108,6 +115,7 @@ export default class AppC extends PureComponent {
         online={online}
         onAPress={this.handleAPress}
         onBPress={this.handleBPress}
+        onDPress={this.handleDPress}
         onTakePhotoPress={this.handleTakePhotoPress}
         onChangeText={this.handleChangeText}
         onUploadPress={this.handleUploadPress}

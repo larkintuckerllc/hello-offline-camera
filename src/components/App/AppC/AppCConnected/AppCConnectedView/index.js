@@ -11,6 +11,7 @@ const AppCConnectedView = ({
   online,
   onAPress,
   onBPress,
+  onDPress,
   onTakePhotoPress,
   onChangeText,
   onUploadPress,
@@ -28,6 +29,7 @@ const AppCConnectedView = ({
       <Button disabled={uploading} title="A" onPress={onAPress} />
       <Button disabled={uploading} title="B" onPress={onBPress} />
       <Text>C</Text>
+      <Button disabled={uploading} title="D" onPress={onDPress} />
       {hasCameraPermission ? (
         <Button disabled={uploading} title="Take Photo" onPress={onTakePhotoPress} />
       ) : (
@@ -53,6 +55,7 @@ AppCConnectedView.propTypes = {
   online: PropTypes.bool.isRequired,
   onAPress: PropTypes.func.isRequired,
   onBPress: PropTypes.func.isRequired,
+  onDPress: PropTypes.func.isRequired,
   onTakePhotoPress: PropTypes.func.isRequired,
   onChangeText: PropTypes.func.isRequired,
   onUploadPress: PropTypes.func.isRequired,

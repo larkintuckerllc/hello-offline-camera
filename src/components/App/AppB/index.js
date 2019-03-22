@@ -25,6 +25,13 @@ export default class AppB extends PureComponent {
     navigate('AppC');
   };
 
+  handleDPress = () => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate('AppD');
+  };
+
   render() {
     return (
       <Fragment>
@@ -33,6 +40,7 @@ export default class AppB extends PureComponent {
           <Button title="A" onPress={this.handleAPress} />
           <Text>B</Text>
           <Button title="C" onPress={this.handleCPress} />
+          <Button title="D" onPress={this.handleDPress} />
         </View>
       </Fragment>
     );
