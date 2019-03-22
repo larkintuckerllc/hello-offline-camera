@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import AppA from './AppA';
 import AppB from './AppB';
 import AppC from './AppC';
+import { dirtyInitialize } from '../../ducks/dirty';
 import { onlineFetch, onlineSubscribe } from '../../ducks/online';
 
 // APP CONTAINER NAVIGATION
@@ -23,17 +24,32 @@ const AppContainerNavigation = createAppContainer(AppNavigator);
 // APP CONTAINER
 class AppContainer extends PureComponent {
   static propTypes = {
+    dirtyInitialize: PropTypes.func.isRequired,
     onlineFetch: PropTypes.func.isRequired,
     onlineSubscribe: PropTypes.func.isRequired,
   };
 
+  state = {
+    loading: true,
+  };
+
   async componentDidMount() {
-    const { onlineFetch: acOnlineFetch, onlineSubscribe: acOnlineSubscribe } = this.props;
+    const {
+      dirtyInitialize: acDirtyInitialize,
+      onlineFetch: acOnlineFetch,
+      onlineSubscribe: acOnlineSubscribe,
+    } = this.props;
     await acOnlineFetch();
-    acOnlineSubscribe();
+    await acOnlineSubscribe();
+    await acDirtyInitialize();
+    this.setState({ loading: false });
   }
 
   render() {
+    const { loading } = this.state;
+    if (loading) {
+      return null;
+    }
     return <AppContainerNavigation />;
   }
 }
@@ -41,6 +57,7 @@ class AppContainer extends PureComponent {
 // CONNECTED APP CONTAINER
 const mapStateToProps = () => ({});
 const mapDispatchToProps = {
+  dirtyInitialize,
   onlineFetch,
   onlineSubscribe,
 };

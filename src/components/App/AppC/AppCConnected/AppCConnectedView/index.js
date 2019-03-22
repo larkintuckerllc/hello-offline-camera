@@ -39,7 +39,7 @@ const AppCConnectedView = ({
         onChangeText={onChangeText}
         value={name}
       />
-      {error && <Text>Error Uploading</Text>}
+      {error && <Text>ERROR UPLOADING</Text>}
       <Button disabled={invalid || uploading} title="Upload" onPress={onUploadPress} />
     </View>
   );

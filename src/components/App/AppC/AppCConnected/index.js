@@ -4,6 +4,7 @@ import React, { PureComponent } from 'react';
 import AppCConnectedView from './AppCConnectedView';
 
 const NAME_REGEX = /^[a-z,A-Z,0-9]+$/;
+const IMAGE_DIRECTORY = `${FileSystem.documentDirectory}images`;
 
 const delay = () =>
   new Promise(resolve => {
@@ -62,18 +63,12 @@ export default class AppC extends PureComponent {
       }
       if (online && !dirty) {
         await delay(); // SAMPLE UPLOAD
-        if (name === 'FIRST') {
+        if (name === 'first') {
           throw new Error(); // SAMPLE ERROR
         }
       } else {
-        // CREATE IMAGES DIRECTORY
-        const imageDirectory = `${FileSystem.documentDirectory}images`;
-        const { exists: dirExists } = await FileSystem.getInfoAsync(imageDirectory, {});
-        if (!dirExists) {
-          await FileSystem.makeDirectoryAsync(imageDirectory, {});
-        }
         // VALIDATE NO DUPLICATE NAME
-        const imageFile = `${imageDirectory}/${name}`;
+        const imageFile = `${IMAGE_DIRECTORY}/${name}`;
         const { exists: fileExists } = await FileSystem.getInfoAsync(imageFile, {});
         if (fileExists) {
           throw new Error();

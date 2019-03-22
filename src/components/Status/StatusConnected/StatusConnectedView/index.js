@@ -19,11 +19,11 @@ const StatusConnectedView = ({
       {names.map(name => (
         <Text key={name}>
           {name}
-          {uploaded[name] !== undefined && 'uploaded'}
-          {errored[name] !== undefined && 'errored'}
+          {uploaded[name] !== undefined && ' (uploaded)'}
+          {errored[name] !== undefined && ' (errored)'}
         </Text>
       ))}
-      {error && <Text>Error Uploading</Text>}
+      {error && <Text>ERROR UPLOADING</Text>}
       <Button disabled={!dirty || uploading} onPress={onUploadPress} title="Upload" />
       <Button disabled={uploading} onPress={onClosePress} title="Close" />
     </View>

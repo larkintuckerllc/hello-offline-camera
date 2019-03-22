@@ -1,3 +1,7 @@
+import { FileSystem } from 'expo';
+
+const IMAGE_DIRECTORY = `${FileSystem.documentDirectory}images`;
+
 // ACTIONS
 const DIRTY_ON = 'DIRTY_ON';
 const DIRTY_OFF = 'DIRTY_OFF';
@@ -9,6 +13,19 @@ export const dirtyOn = () => ({
 export const dirtyOff = () => ({
   type: DIRTY_OFF,
 });
+export const dirtyInitialize = () => async dispatch => {
+  // CREATE IMAGES DIRECTORY
+  const { exists: dirExists } = await FileSystem.getInfoAsync(IMAGE_DIRECTORY, {});
+  if (!dirExists) {
+    await FileSystem.makeDirectoryAsync(IMAGE_DIRECTORY, {});
+  }
+  // SET DIRTY
+  const names = await FileSystem.readDirectoryAsync(IMAGE_DIRECTORY);
+  if (names.length === 0) {
+    return;
+  }
+  dispatch(dirtyOn());
+};
 
 // STATE
 const initialState = false;

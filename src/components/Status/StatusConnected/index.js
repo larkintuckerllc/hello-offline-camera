@@ -52,7 +52,7 @@ export default class StatusConnected extends PureComponent {
     const imageFile = `${IMAGE_DIRECTORY}/${name}`;
     try {
       await delay(); // SAMPLE UPLOAD
-      if (name === 'SECOND') {
+      if (name === 'second') {
         throw new Error(); // SAMPLE ERROR
       }
       await FileSystem.deleteAsync(imageFile, {});
