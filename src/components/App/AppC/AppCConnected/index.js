@@ -19,6 +19,7 @@ export default class AppC extends PureComponent {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
+    notification: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -104,7 +105,7 @@ export default class AppC extends PureComponent {
   };
 
   render() {
-    const { dirty, online } = this.props;
+    const { dirty, notification, online } = this.props;
     const { error, hasCameraPermission, name, uploading, uri } = this.state;
     return (
       <AppCConnectedView
@@ -112,6 +113,7 @@ export default class AppC extends PureComponent {
         error={error}
         hasCameraPermission={hasCameraPermission}
         name={name}
+        notification={notification}
         online={online}
         onAPress={this.handleAPress}
         onBPress={this.handleBPress}

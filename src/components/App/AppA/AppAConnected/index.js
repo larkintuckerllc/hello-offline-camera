@@ -13,6 +13,7 @@ export default class AppAConnected extends PureComponent {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
+    notification: PropTypes.bool.isRequired,
     notificationOn: PropTypes.func.isRequired,
     online: PropTypes.bool.isRequired,
   };
@@ -58,13 +59,14 @@ export default class AppAConnected extends PureComponent {
   };
 
   render() {
-    const { dirty, online } = this.props;
+    const { dirty, notification, online } = this.props;
     return (
       <Fragment>
         <Status />
         <View style={styles.container}>
           {online ? <Text>ONLINE</Text> : <Text>OFFLINE</Text>}
           {dirty ? <Text>DIRTY</Text> : <Text>CLEAN</Text>}
+          {notification ? <Text>NOTIFY</Text> : <Text>NO NOTIFY</Text>}
           <Button
             disabled={!(online && dirty)}
             title="Show Notification"

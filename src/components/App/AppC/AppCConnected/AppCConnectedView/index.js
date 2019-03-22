@@ -8,6 +8,7 @@ const AppCConnectedView = ({
   error,
   hasCameraPermission,
   name,
+  notification,
   online,
   onAPress,
   onBPress,
@@ -26,6 +27,7 @@ const AppCConnectedView = ({
     <View style={styles.container}>
       {online ? <Text>ONLINE</Text> : <Text>OFFLINE</Text>}
       {dirty ? <Text>DIRTY</Text> : <Text>CLEAN</Text>}
+      {notification ? <Text>NOTIFY</Text> : <Text>NO NOTIFY</Text>}
       <Button disabled={uploading} title="A" onPress={onAPress} />
       <Button disabled={uploading} title="B" onPress={onBPress} />
       <Text>C</Text>
@@ -52,6 +54,7 @@ AppCConnectedView.propTypes = {
   error: PropTypes.bool.isRequired,
   hasCameraPermission: PropTypes.bool,
   name: PropTypes.string.isRequired,
+  notification: PropTypes.bool.isRequired,
   online: PropTypes.bool.isRequired,
   onAPress: PropTypes.func.isRequired,
   onBPress: PropTypes.func.isRequired,
