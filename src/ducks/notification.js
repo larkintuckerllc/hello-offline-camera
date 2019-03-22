@@ -9,6 +9,14 @@ export const notificationOn = () => ({
 export const notificationOff = () => ({
   type: NOTIFICATION_OFF,
 });
+export const notificationInitialize = () => (dispatch, getState) => {
+  const state = getState();
+  const { dirty, online } = state;
+  if (!(dirty && online)) {
+    return;
+  }
+  dispatch(notificationOn());
+};
 
 // STATE
 const initialState = false;

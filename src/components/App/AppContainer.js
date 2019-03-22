@@ -7,6 +7,7 @@ import AppB from './AppB';
 import AppC from './AppC';
 import { dirtyInitialize } from '../../ducks/dirty';
 import { onlineFetch, onlineSubscribe } from '../../ducks/online';
+import { notificationInitialize } from '../../ducks/notification';
 
 // APP CONTAINER NAVIGATION
 const AppNavigator = createSwitchNavigator(
@@ -25,6 +26,7 @@ const AppContainerNavigation = createAppContainer(AppNavigator);
 class AppContainer extends PureComponent {
   static propTypes = {
     dirtyInitialize: PropTypes.func.isRequired,
+    notificationInitialize: PropTypes.func.isRequired,
     onlineFetch: PropTypes.func.isRequired,
     onlineSubscribe: PropTypes.func.isRequired,
   };
@@ -36,12 +38,14 @@ class AppContainer extends PureComponent {
   async componentDidMount() {
     const {
       dirtyInitialize: acDirtyInitialize,
+      notificationInitialize: acNotificationInitialize,
       onlineFetch: acOnlineFetch,
       onlineSubscribe: acOnlineSubscribe,
     } = this.props;
     await acOnlineFetch();
     await acOnlineSubscribe();
     await acDirtyInitialize();
+    acNotificationInitialize();
     this.setState({ loading: false });
   }
 
@@ -58,6 +62,7 @@ class AppContainer extends PureComponent {
 const mapStateToProps = () => ({});
 const mapDispatchToProps = {
   dirtyInitialize,
+  notificationInitialize,
   onlineFetch,
   onlineSubscribe,
 };
